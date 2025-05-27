@@ -1,0 +1,27 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-gray-800 text-white py-6 mt-auto">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col md:flex-row justify-between items-center">
+      <div class="text-center md:text-left mb-4 md:mb-0">
+        <p>&copy; {currentYear} AlterEgo. All rights reserved.</p>
+      </div>
+      <div class="flex space-x-4">
+        <a href="#" class="hover:text-gray-300 transition-colors">
+          <span class="sr-only">Facebook</span>
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="#" class="hover:text-gray-300 transition-colors">
+          <span class="sr-only">Instagram</span>
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="#" class="hover:text-gray-300 transition-colors">
+          <span class="sr-only">Twitter</span>
+          <i class="fab fa-twitter"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer> 
