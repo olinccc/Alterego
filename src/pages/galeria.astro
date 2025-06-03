@@ -1,0 +1,29 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const galleryImages = [
+  { src: '/final 1.jpg', alt: 'Final 1' },
+  { src: '/final 2.jpg', alt: 'Final 2' },
+  { src: '/final 3.jpg', alt: 'Final 3' },
+  { src: '/final 4.jpg', alt: 'Final 4' },
+  { src: '/final 5.jpg', alt: 'Final 5' },
+  { src: '/final 6.jpg', alt: 'Final 6' },
+  { src: '/final 7.jpg', alt: 'Final 7' }
+];
+---
+<Layout title="PORTAFOLIO">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8 text-center">PORTAFOLIO</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {galleryImages.map((image) => (
+        <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+          <img
+            src={image.src}
+            alt={image.alt}
+            class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+      ))}
+    </div>
+  </div>
+</Layout> 
