@@ -1,93 +1,52 @@
 ---
 import { Image } from 'astro:assets';
-import scanImage from '../assets/Escanear 5.jpeg';
-import videoFile from '../assets/vid.mp4';
+import yoImage from '../assets/yO.JPG';
+import espjoImage from '../assets/esPjo.JPG';
+import camionImage from '../assets/camion.JPG';
 
-interface ImageItem {
-  type: 'image';
-  src: ImageMetadata;
-  alt: string;
-}
-
-interface VideoItem {
-  type: 'video';
-  src: string;
-  alt: string;
-}
-
-type MediaItem = ImageItem | VideoItem;
-
-const mediaItems: MediaItem[] = [
-  {
-    type: 'image',
-    src: scanImage,
-    alt: 'Scan Image'
-  },
-  {
-    type: 'video',
-    src: videoFile.toString(),
-    alt: 'Video'
-  }
+const images = [
+  { src: yoImage, alt: 'Yo' },
+  { src: espjoImage, alt: 'Espejo' },
+  { src: camionImage, alt: 'Camión' }
 ];
 ---
 
 <div class="swiper mySwiper">
   <div class="swiper-wrapper">
-    {mediaItems.map((item) => (
+    {images.map((image) => (
       <div class="swiper-slide">
-        {item.type === 'image' ? (
-          <Image 
-            src={item.src}
-            alt={item.alt}
-            width={1200}
-            height={800}
-            class="w-full h-[500px] object-cover"
-          />
-        ) : (
-          <video 
-            class="w-full h-[500px] object-cover" 
-            controls={false} 
-            autoplay 
-            muted 
-            loop
-          >
-            <source src={item.src} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        )}
+        <Image 
+          src={image.src} 
+          alt={image.alt}
+          class="w-full h-[500px] object-cover"
+        />
       </div>
     ))}
   </div>
 </div>
 
-<style>
-  @import 'swiper/css';
-  
-  .swiper {
-    width: 100%;
-    height: 500px;
-  }
-
-  .swiper-slide {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
 <script>
   import Swiper from 'swiper';
   import { Autoplay } from 'swiper/modules';
-  import 'swiper/css';
 
-  const swiper = new Swiper('.mySwiper', {
+  new Swiper('.mySwiper', {
     modules: [Autoplay],
     spaceBetween: 30,
     centeredSlides: true,
     autoplay: {
-      delay: 3500,
+      delay: 2500,
       disableOnInteraction: false,
     },
     loop: true,
   });
-</script> 
+</script>
+
+<style>
+  .swiper {
+    width: 100%;
+    height: 500px;
+  }
+</style> 

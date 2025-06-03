@@ -1,9 +1,63 @@
-<header class="bg-gray-800 text-white py-4">
+<header class="bg-[#f6f6f6] text-gray-800 py-4 shadow-sm">
   <nav class="container mx-auto px-4">
-    <div class="flex justify-center items-center space-x-12">
-      <a href="/about" class="text-lg hover:text-gray-300 transition-colors">About Me</a>
-      <a href="/" class="text-xl font-bold hover:text-gray-300 transition-colors">Home</a>
-      <a href="/portfolio" class="text-lg hover:text-gray-300 transition-colors">Portfolio</a>
+    <div class="flex justify-end items-center">
+      <button id="menu-toggle" class="w-6 h-6 hover:text-gray-600 transition-colors">
+        <img 
+          src="/estrella.svg" 
+          alt="Menu" 
+          class="w-full h-full" 
+        />
+      </button>
+      
+      <div id="mobile-menu" class="fixed top-0 right-0 h-screen w-64 bg-[#f6f6f6] shadow-lg transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="p-6">
+          <button id="menu-close" class="absolute top-4 right-4 text-2xl hover:text-gray-600">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="flex flex-col space-y-6 mt-12">
+            <a href="/" class="text-lg hover:text-gray-600 transition-colors">Home</a>
+            <a href="/about" class="text-lg hover:text-gray-600 transition-colors">About Me</a>
+            <a href="/portfolio" class="text-lg hover:text-gray-600 transition-colors">Portfolio</a>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
-</header> 
+</header>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const menuClose = document.getElementById('menu-close');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.remove('translate-x-full');
+  });
+
+  menuClose?.addEventListener('click', () => {
+    mobileMenu?.classList.add('translate-x-full');
+  });
+
+  // Cerrar menú al hacer clic fuera
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest('#mobile-menu') && !target.closest('#menu-toggle')) {
+      mobileMenu?.classList.add('translate-x-full');
+    }
+  });
+</script>
+
+<style>
+  /* Asegurar que el menú esté por encima de otros elementos */
+  #mobile-menu {
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  #menu-toggle img {
+    transition: transform 0.3s ease;
+  }
+
+  #menu-toggle:hover img {
+    transform: rotate(180deg);
+  }
+</style> 

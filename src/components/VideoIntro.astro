@@ -1,0 +1,51 @@
+---
+import videoFile from '../assets/vid.mp4';
+---
+
+<div class="video-section w-full h-screen">
+  <video 
+    id="intro-video"
+    class="w-full h-full object-cover"
+    autoplay 
+    muted 
+    playsinline
+    loop
+  >
+    <source src={videoFile} type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+</div>
+
+<script>
+  const videoSection = document.querySelector('.video-section') as HTMLElement;
+  
+  if (videoSection) {
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      
+      // Solo aplicar efecto cuando se desliza hacia arriba
+      if (currentScrollY < lastScrollY) {
+        // Calcular opacidad basada en cuánto se ha deslizado hacia arriba
+        const scrollDistance = lastScrollY - currentScrollY;
+        const maxScroll = window.innerHeight / 2; // Usar la mitad de la altura de la pantalla como máximo
+        const opacity = Math.max(0, 1 - (scrollDistance / maxScroll));
+        
+        videoSection.style.opacity = opacity.toString();
+      } else {
+        // Al deslizar hacia abajo, restaurar opacidad
+        videoSection.style.opacity = '1';
+      }
+      
+      lastScrollY = currentScrollY;
+    });
+  }
+</script>
+
+<style>
+  .video-section {
+    position: relative;
+    transition: opacity 0.2s ease-out;
+  }
+</style> 
