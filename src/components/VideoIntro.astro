@@ -2,7 +2,7 @@
 import videoFile from '../assets/vid.mp4';
 ---
 
-<div class="video-section w-full h-screen">
+<div class="video-section w-full h-screen fixed top-0 left-0 z-50">
   <video 
     id="intro-video"
     class="w-full h-full object-cover"
@@ -16,8 +16,47 @@ import videoFile from '../assets/vid.mp4';
   </video>
 </div>
 
+<script>
+  const videoSection = document.querySelector('.video-section') as HTMLElement;
+  const video = document.getElementById('intro-video') as HTMLVideoElement;
+  
+  if (videoSection && video) {
+    let lastScrollY = window.scrollY;
+    const threshold = window.innerHeight * 0.10; // 10% of viewport height
+    
+    window.addEventListener('scroll', () => {
+      const currentScrollY = window.scrollY;
+      
+      // Si estamos scrolleando hacia abajo
+      if (currentScrollY > lastScrollY) {
+        // Calcular la opacidad basada en el scroll
+        const scrollDistance = currentScrollY - lastScrollY;
+        const opacity = Math.max(0, 1 - (scrollDistance / threshold));
+        
+        videoSection.style.opacity = opacity.toString();
+        
+        // Si el scroll supera el 10% de la altura de la ventana
+        if (scrollDistance > threshold) {
+          // Ocultar el video completamente
+          videoSection.style.opacity = '0';
+          
+          // Esperar a que termine la transición de opacidad
+          setTimeout(() => {
+            videoSection.style.display = 'none';
+            // Navegar a home y resetear el scroll
+            window.scrollTo(0, 0);
+          }, 500);
+        }
+      }
+      
+      lastScrollY = currentScrollY;
+    });
+  }
+</script>
+
 <style>
   .video-section {
-    position: relative;
+    position: fixed;
+    transition: opacity 0.5s ease-out;
   }
 </style> 
