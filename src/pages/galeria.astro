@@ -1,41 +1,101 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Preloader from '../components/Preloader.astro';
 
 const galleryImages = [
-  { src: '/final 1.jpg', alt: 'Final 1' },
-  { src: '/final 2.jpg', alt: 'Final 2' },
-  { src: '/final 3.jpg', alt: 'Final 3' },
-  { src: '/final 4.jpg', alt: 'Final 4' },
-  { src: '/final 5.jpg', alt: 'Final 5' },
-  { src: '/final 6.jpg', alt: 'Final 6' },
-  { src: '/final 7.jpg', alt: 'Final 7' },
-  { src: '/positivo.jpg', alt: 'Positivo' },
-  { src: '/negativo.jpg', alt: 'Negativo' }
+  { 
+    src: '/final 1.jpg', 
+    alt: 'Eco 404 en su forma digital', 
+    description: 'Representación digital de Eco 404 explorando la intersección entre lo real y lo virtual'
+  },
+  { 
+    src: '/final 2.jpg', 
+    alt: 'Eco 404 interactuando con tecnología', 
+    description: 'Eco 404 fusionando elementos tecnológicos con expresión artística'
+  },
+  { 
+    src: '/final 3.jpg', 
+    alt: 'Eco 404 en transformación', 
+    description: 'Proceso de transformación digital de Eco 404 mostrando la fluidez entre realidades'
+  },
+  { 
+    src: '/final 4.jpg', 
+    alt: 'Eco 404 en el ciberespacio', 
+    description: 'Eco 404 navegando y explorando espacios digitales abstractos'
+  },
+  { 
+    src: '/final 5.jpg', 
+    alt: 'Eco 404 y patrones digitales', 
+    description: 'Patrones y texturas digitales que forman parte de la identidad de Eco 404'
+  },
+  { 
+    src: '/final 6.jpg', 
+    alt: 'Eco 404 en glitch', 
+    description: 'Manifestación glitch de Eco 404 representando la imperfección digital'
+  },
+  { 
+    src: '/final 7.jpg', 
+    alt: 'Eco 404 en transición', 
+    description: 'Momento de transición entre el mundo físico y digital de Eco 404'
+  },
+  { 
+    src: '/positivo.jpg', 
+    alt: 'Eco 404 en su forma positiva', 
+    description: 'Representación positiva de Eco 404 mostrando su lado luminoso y constructivo'
+  },
+  { 
+    src: '/negativo.jpg', 
+    alt: 'Eco 404 en su forma negativa', 
+    description: 'Representación negativa de Eco 404 explorando la dualidad digital'
+  }
 ];
 ---
 <Layout title="PORTAFOLIO">
+  <Preloader />
   <div class="container mx-auto px-4 py-8">
     <div class="text-center mb-8">
       <h1>Galería</h1>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {galleryImages.map((image) => (
-        <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer gallery-item">
+    <section 
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      role="region" 
+      aria-label="Galería de imágenes"
+    >
+      {galleryImages.map((image, index) => (
+        <div 
+          class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer gallery-item"
+          role="button"
+          tabindex="0"
+          aria-label={`Ver ${image.description}`}
+        >
           <img
             src={image.src}
             alt={image.alt}
             class="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+            loading="lazy"
           />
+          <div class="sr-only">{image.description}</div>
         </div>
       ))}
-    </div>
+    </section>
   </div>
 
   <!-- Modal para imagen grande -->
-  <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+  <div 
+    id="imageModal" 
+    class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Visor de imagen"
+  >
     <div class="relative max-w-7xl mx-auto p-4">
-      <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-50 w-10 h-10 flex items-center justify-center leading-none">×</button>
+      <button 
+        id="closeModal" 
+        class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-50 w-10 h-10 flex items-center justify-center leading-none"
+        aria-label="Cerrar imagen"
+      >×</button>
       <img id="modalImage" src="" alt="" class="max-h-[90vh] max-w-full object-contain" />
+      <p id="modalDescription" class="sr-only"></p>
     </div>
   </div>
 </Layout>
@@ -43,47 +103,85 @@ const galleryImages = [
 <script>
   const modal = document.getElementById('imageModal');
   const modalImg = document.getElementById('modalImage') as HTMLImageElement;
+  const modalDescription = document.getElementById('modalDescription');
   const closeBtn = document.getElementById('closeModal');
   const galleryItems = document.querySelectorAll('.gallery-item');
 
+  let currentFocusedItem: Element | null = null;
+
   // Abrir modal
-  galleryItems.forEach(item => {
-    item.addEventListener('click', () => {
+  galleryItems.forEach((item, index) => {
+    const handleOpen = () => {
       const img = item.querySelector('img') as HTMLImageElement;
-      if (modal && modalImg && img) {
+      const description = item.querySelector('.sr-only')?.textContent;
+      if (modal && modalImg && img && modalDescription) {
         modalImg.src = img.src;
         modalImg.alt = img.alt;
+        modalDescription.textContent = description;
         modal.classList.remove('hidden');
         modal.classList.add('flex');
-        document.body.style.overflow = 'hidden'; // Prevenir scroll
+        document.body.style.overflow = 'hidden';
+        closeBtn?.focus();
+        currentFocusedItem = item;
+      }
+    };
+
+    item.addEventListener('click', handleOpen);
+    item.addEventListener('keydown', (e) => {
+      if (e instanceof KeyboardEvent) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleOpen();
+        }
       }
     });
   });
 
   // Cerrar modal con botón
-  closeBtn?.addEventListener('click', () => {
+  const handleClose = () => {
     if (modal) {
       modal.classList.add('hidden');
       modal.classList.remove('flex');
-      document.body.style.overflow = ''; // Restaurar scroll
+      document.body.style.overflow = '';
+      currentFocusedItem?.focus();
     }
-  });
+  };
+
+  closeBtn?.addEventListener('click', handleClose);
 
   // Cerrar modal al hacer clic fuera de la imagen
   modal?.addEventListener('click', (e) => {
     if (e.target === modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = ''; // Restaurar scroll
+      handleClose();
     }
   });
 
   // Cerrar modal con tecla Escape
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && modal) {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = ''; // Restaurar scroll
+    if (e instanceof KeyboardEvent) {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('hidden')) {
+        handleClose();
+      }
+    }
+  });
+
+  // Navegación por teclado entre imágenes
+  document.addEventListener('keydown', (e) => {
+    if (e instanceof KeyboardEvent) {
+      const items = Array.from(galleryItems);
+      const currentIndex = currentFocusedItem ? items.indexOf(currentFocusedItem) : -1;
+
+      if (currentIndex === -1) return;
+
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        const nextIndex = (currentIndex + 1) % items.length;
+        (items[nextIndex] as HTMLElement).focus();
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        const prevIndex = (currentIndex - 1 + items.length) % items.length;
+        (items[prevIndex] as HTMLElement).focus();
+      }
     }
   });
 </script> 

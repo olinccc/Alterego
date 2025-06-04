@@ -1,0 +1,21 @@
+<div id="preloader" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+  <div class="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-gray-900"></div>
+</div>
+
+<script>
+  window.addEventListener('load', () => {
+    const preloader = document.getElementById('preloader');
+    setTimeout(() => {
+      preloader?.classList.add('opacity-0');
+      setTimeout(() => {
+        preloader?.remove();
+      }, 300);
+    }, 500);
+  });
+</script>
+
+<style>
+  #preloader {
+    transition: opacity 0.3s ease-out;
+  }
+</style> 
