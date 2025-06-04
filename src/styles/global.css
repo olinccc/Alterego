@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+@layer base {
+  h1 {
+    line-height: .8em!important;
+    @apply text-4xl lg:text-6xl uppercase font-bold mb-8 text-center bg-white/80 inline-block mx-auto;
+  }
+  p {
+    @apply text-xs md:text-sm lg:text-base text-center max-w-2xl mx-auto bg-white/80;
+  }
+}

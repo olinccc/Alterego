@@ -11,7 +11,8 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
     "astro": "^5.8.0",
-    "tailwindcss": "^4.1.7",
-    "swiper": "^11.0.5"
+    "gsap": "^3.13.0",
+    "swiper": "^11.0.5",
+    "tailwindcss": "^4.1.7"
   }
 }

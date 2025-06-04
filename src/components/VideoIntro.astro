@@ -21,42 +21,32 @@ import videoFile from '../assets/vid.mp4';
   const video = document.getElementById('intro-video') as HTMLVideoElement;
   
   if (videoSection && video) {
-    let lastScrollY = window.scrollY;
-    const threshold = window.innerHeight * 0.10; // 10% of viewport height
-    
-    window.addEventListener('scroll', () => {
-      const currentScrollY = window.scrollY;
+    const handleScroll = () => {
+      // Ocultar el video inmediatamente al detectar scroll
+      videoSection.style.opacity = '0';
+      videoSection.style.transform = 'translateY(-100vh)';
       
-      // Si estamos scrolleando hacia abajo
-      if (currentScrollY > lastScrollY) {
-        // Calcular la opacidad basada en el scroll
-        const scrollDistance = currentScrollY - lastScrollY;
-        const opacity = Math.max(0, 1 - (scrollDistance / threshold));
-        
-        videoSection.style.opacity = opacity.toString();
-        
-        // Si el scroll supera el 10% de la altura de la ventana
-        if (scrollDistance > threshold) {
-          // Ocultar el video completamente
-          videoSection.style.opacity = '0';
-          
-          // Esperar a que termine la transición de opacidad
-          setTimeout(() => {
-            videoSection.style.display = 'none';
-            // Navegar a home y resetear el scroll
-            window.scrollTo(0, 0);
-          }, 500);
+      // Esperar a que termine la transición
+      setTimeout(() => {
+        videoSection.style.display = 'none';
+        // Navegar a home
+        const homeSection = document.querySelector('#home');
+        if (homeSection) {
+          homeSection.scrollIntoView({ behavior: 'smooth' });
         }
-      }
+      }, 500);
       
-      lastScrollY = currentScrollY;
-    });
+      // Remover el event listener después de la primera activación
+      window.removeEventListener('scroll', handleScroll);
+    };
+
+    window.addEventListener('scroll', handleScroll);
   }
 </script>
 
 <style>
   .video-section {
     position: fixed;
-    transition: opacity 0.5s ease-out;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   }
 </style> 
