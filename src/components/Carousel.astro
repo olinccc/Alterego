@@ -18,7 +18,8 @@ const images = [
         <Image 
           src={image.src} 
           alt={image.alt}
-          class="w-full h-[500px] object-cover"
+          width={1920}
+          height={1080}
         />
       </div>
     ))}
@@ -42,11 +43,4 @@ const images = [
     },
     loop: true,
   });
-</script>
-
-<style>
-  .swiper {
-    width: 100%;
-    height: 500px;
-  }
-</style> 
+</script> 
