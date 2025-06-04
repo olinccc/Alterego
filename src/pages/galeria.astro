@@ -8,7 +8,9 @@ const galleryImages = [
   { src: '/final 4.jpg', alt: 'Final 4' },
   { src: '/final 5.jpg', alt: 'Final 5' },
   { src: '/final 6.jpg', alt: 'Final 6' },
-  { src: '/final 7.jpg', alt: 'Final 7' }
+  { src: '/final 7.jpg', alt: 'Final 7' },
+  { src: '/positivo.jpg', alt: 'Positivo' },
+  { src: '/negativo.jpg', alt: 'Negativo' }
 ];
 ---
 <Layout title="PORTAFOLIO">
@@ -18,7 +20,7 @@ const galleryImages = [
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {galleryImages.map((image) => (
-        <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow">
+        <div class="relative overflow-hidden rounded-lg shadow-lg hover:shadow-xl transition-shadow cursor-pointer gallery-item">
           <img
             src={image.src}
             alt={image.alt}
@@ -28,4 +30,60 @@ const galleryImages = [
       ))}
     </div>
   </div>
-</Layout> 
+
+  <!-- Modal para imagen grande -->
+  <div id="imageModal" class="fixed inset-0 bg-black bg-opacity-75 hidden items-center justify-center z-50">
+    <div class="relative max-w-7xl mx-auto p-4">
+      <button id="closeModal" class="absolute top-4 right-4 text-white text-4xl hover:text-gray-300 z-50 w-10 h-10 flex items-center justify-center leading-none">×</button>
+      <img id="modalImage" src="" alt="" class="max-h-[90vh] max-w-full object-contain" />
+    </div>
+  </div>
+</Layout>
+
+<script>
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage') as HTMLImageElement;
+  const closeBtn = document.getElementById('closeModal');
+  const galleryItems = document.querySelectorAll('.gallery-item');
+
+  // Abrir modal
+  galleryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const img = item.querySelector('img') as HTMLImageElement;
+      if (modal && modalImg && img) {
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        document.body.style.overflow = 'hidden'; // Prevenir scroll
+      }
+    });
+  });
+
+  // Cerrar modal con botón
+  closeBtn?.addEventListener('click', () => {
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = ''; // Restaurar scroll
+    }
+  });
+
+  // Cerrar modal al hacer clic fuera de la imagen
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = ''; // Restaurar scroll
+    }
+  });
+
+  // Cerrar modal con tecla Escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = ''; // Restaurar scroll
+    }
+  });
+</script> 
