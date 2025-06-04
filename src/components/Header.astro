@@ -4,10 +4,11 @@ import estrellaSvg from '../assets/estrella.svg?url';
 
 const currentPath = Astro.url.pathname;
 const isGalleryOrAbout = currentPath === '/galeria' || currentPath === '/about';
+const isAbout = currentPath === '/about';
 ---
 
 <header>
-  <button id="menu-toggle" class={`${isGalleryOrAbout ? 'absolute' : 'fixed'} top-4 right-4 cursor-pointer w-[64px] h-[64px] hover:text-gray-600 transition-colors z-50`}>
+  <button id="menu-toggle" class={`${isGalleryOrAbout ? 'absolute' : 'fixed'} ${isAbout ? 'top-6' : 'top-8'} right-4 cursor-pointer w-[48px] h-[48px] md:w-[64px] md:h-[64px] hover:text-gray-600 transition-colors z-50`}>
     <img 
       src={estrellaSvg} 
       alt="Menu" 
